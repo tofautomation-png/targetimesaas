@@ -140,10 +140,10 @@ export default function ClientsPage() {
                       type="text"
                       defaultValue={client.client_name}
                       className="bg-transparent border-none text-text-primary font-medium focus:outline-none focus:bg-white/5 rounded px-2 py-1"
-                      onBlur={(e) => {
-                        // Handle name update
-                        console.log('Update name:', e.target.value);
-                      }}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      // Handle name update
+                      console.log('Update name:', e.target.value);
+                    }}  
                     />
                     {client.needs_attention && (
                       <AlertTriangle className="w-4 h-4 text-yellow-400" />
@@ -158,7 +158,7 @@ export default function ClientsPage() {
                     type="email"
                     defaultValue={client.email}
                     className="bg-transparent border-none text-text-primary focus:outline-none focus:bg-white/5 rounded px-2 py-1 w-full"
-                    onBlur={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       // Handle email update
                       console.log('Update email:', e.target.value);
                     }}
@@ -170,7 +170,7 @@ export default function ClientsPage() {
                     defaultValue={client.phone || ''}
                     placeholder="Add phone"
                     className="bg-transparent border-none text-text-primary focus:outline-none focus:bg-white/5 rounded px-2 py-1 w-full placeholder-text-secondary"
-                    onBlur={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       // Handle phone update
                       console.log('Update phone:', e.target.value);
                     }}
@@ -180,14 +180,15 @@ export default function ClientsPage() {
                   <select
                     defaultValue={client.status || 'pending'}
                     className="bg-white/5 border border-white/10 rounded px-2 py-1 text-text-primary text-sm focus:outline-none focus:ring-1 focus:ring-neon-primary/50"
-                    onChange={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                       // Handle status update
                       console.log('Update status:', e.target.value);
                     }}
                   >
-                    <option value="active">Active</option>
                     <option value="pending">Pending</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
                   </select>
                 </td>
                 <td className="py-4 px-4 text-text-secondary text-sm">

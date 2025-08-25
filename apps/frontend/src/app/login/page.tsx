@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [showWelcomeCard, setShowWelcomeCard] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
+  const [hasShownAnimation, setHasShownAnimation] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,17 +25,23 @@ export default function LoginPage() {
     try {
       await apiClient.login(email, password);
       
-      // Show welcome card animation
-      setShowWelcomeCard(true);
-      setShowBackground(true);
-      
-      // After 4 seconds, slide background down and navigate
-      setTimeout(() => {
-        setShowBackground(false);
+      // Only show animation if it hasn't been shown before
+      if (!hasShownAnimation) {
+        setShowWelcomeCard(true);
+        setShowBackground(true);
+        setHasShownAnimation(true);
+        
+        // After 4 seconds, slide background down and navigate
         setTimeout(() => {
-          router.push('/dashboard/overview');
-        }, 800); // Wait for slide animation
-      }, 4000);
+          setShowBackground(false);
+          setTimeout(() => {
+            router.push('/dashboard/overview');
+          }, 800); // Wait for slide animation
+        }, 4000);
+      } else {
+        // Skip animation and go directly to dashboard
+        router.push('/dashboard/overview');
+      }
       
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Login failed');
@@ -55,7 +62,7 @@ export default function LoginPage() {
               opacity: { duration: 0.3 },
               y: { duration: 0.8, ease: "easeInOut" }
             }}
-            className="fixed inset-0 bg-green-900 z-50"
+            className="fixed inset-0 z-50 bg-gradient-to-br from-neon-primary via-background-secondary to-neon-accent"
           />
         )}
       </AnimatePresence>
