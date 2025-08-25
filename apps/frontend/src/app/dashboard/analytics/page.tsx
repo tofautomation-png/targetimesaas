@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   BarChart3, 
@@ -149,7 +149,10 @@ export default function AnalyticsPage() {
     </motion.div>
   );
 
-  const PieChartComponent = ({ data: chartData, title }) => {
+  const PieChartComponent = ({ data: chartData, title }: {
+    data: Record<string, number>;
+    title: string;
+  }) => {
     const total = Object.values(chartData).reduce((sum: number, val: number) => sum + val, 0);
     const colors = ['#00FF85', '#00FFC5', '#4EF0A8', '#FF6B6B', '#4ECDC4'];
     
@@ -186,7 +189,10 @@ export default function AnalyticsPage() {
     );
   };
 
-  const BarChartComponent = ({ data: chartData, title }) => {
+  const BarChartComponent = ({ data: chartData, title }: {
+    data: Array<{ month: string; revenue: number }>;
+    title: string;
+  }) => {
     const maxValue = Math.max(...chartData.map(item => item.revenue));
     
     return (
