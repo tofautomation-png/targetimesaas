@@ -48,8 +48,8 @@ class BaserowClient {
       throw new Error(`Failed to fetch tables: ${response.status}`);
     }
 
-    const data = await response.json() as { results: BaserowTable[] };
-    return data.results;
+    const data = await response.json() as BaserowTable[];
+    return data;
   }
 
   private parseTableName(tableName: string): { prefix: string; agencyCode: string | null } {
