@@ -247,13 +247,13 @@ export default function AnalyticsPage() {
           <StatCard
             icon={Users}
             title="Total Clients"
-            value={data.totalClients}
+            value={data.totalClients.toString()}
             subtitle="All client types"
           />
           <StatCard
             icon={Calendar}
             title="Appointments"
-            value={data.totalAppointments}
+            value={data.totalAppointments.toString()}
             subtitle="All time"
           />
           <StatCard
