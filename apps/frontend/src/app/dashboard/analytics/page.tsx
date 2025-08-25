@@ -287,13 +287,13 @@ export default function AnalyticsPage() {
           <StatCard
             icon={Clock}
             title="Welcome Clients"
-            value={data.clientsByType.welcome}
+            value={data.clientsByType.welcome.toString()}
             subtitle="New prospects"
           />
           <StatCard
             icon={Phone}
             title="Follow-ups Due"
-            value={data.clientsByType.followup}
+            value={data.clientsByType.followup.toString()}
             subtitle="Require attention"
           />
         </div>
