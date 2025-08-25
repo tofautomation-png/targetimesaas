@@ -42,7 +42,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         agency_code: user.agency_code
       };
 
-      setSessionUser(request, sessionUser);
+      await setSessionUser(request, sessionUser);
 
       return reply.code(200).send({
         user: {

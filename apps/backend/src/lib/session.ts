@@ -17,8 +17,9 @@ export function requireAuth(request: FastifyRequest): SessionUser {
   return user;
 }
 
-export function setSessionUser(request: FastifyRequest, user: SessionUser): void {
+export async function setSessionUser(request: FastifyRequest, user: SessionUser): Promise<void> {
   (request.session as any).user = user;
+  await request.session.save();
 }
 
 export function clearSession(request: FastifyRequest): void {
