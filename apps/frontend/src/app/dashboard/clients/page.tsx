@@ -88,7 +88,7 @@ export default function ClientsPage() {
     );
   }
 
-  const renderClientList = (clients: Client[], type: 'welcome' | 'retargeting' | 'followups') => {
+  const renderClientTable = (clients: Client[], type: 'welcome' | 'retargeting' | 'followups') => {
     if (clients.length === 0) {
       return (
         <div className="text-center py-12">
@@ -108,106 +108,130 @@ export default function ClientsPage() {
     }
 
     return (
-      <div className="space-y-4">
-        {clients.map((client, index) => (
-          <motion.div
-            key={client.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="glass-panel p-6 hover:bg-white/5 transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <div className="flex items-center space-x-4">
-                  <div>
-                    <h3 className="font-semibold text-text-primary flex items-center">
-                      {client.client_name}
-                      {client.needs_attention && (
-                        <AlertTriangle className="w-4 h-4 text-yellow-400 ml-2" />
-                      )}
-                      {client.is_overdue && (
-                        <Clock className="w-4 h-4 text-red-400 ml-2" />
-                      )}
-                    </h3>
-                    <div className="flex items-center space-x-4 text-sm text-text-secondary mt-1">
-                      <div className="flex items-center">
-                        <Mail className="w-4 h-4 mr-1" />
-                        {client.email}
-                      </div>
-                      {client.phone && (
-                        <div className="flex items-center">
-                          <Phone className="w-4 h-4 mr-1" />
-                          {client.phone}
-                        </div>
-                      )}
-                    </div>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/10">
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Name</th>
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Email</th>
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Phone</th>
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Status</th>
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Created</th>
+              {type !== 'welcome' && (
+                <th className="text-left py-4 px-4 text-text-secondary font-medium">
+                  {type === 'retargeting' ? 'Last Visit' : 'Due Date'}
+                </th>
+              )}
+              <th className="text-left py-4 px-4 text-text-secondary font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clients.map((client, index) => (
+              <motion.tr
+                key={client.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="border-b border-white/5 hover:bg-white/5 transition-colors"
+              >
+                <td className="py-4 px-4">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      defaultValue={client.client_name}
+                      className="bg-transparent border-none text-text-primary font-medium focus:outline-none focus:bg-white/5 rounded px-2 py-1"
+                      onBlur={(e) => {
+                        // Handle name update
+                        console.log('Update name:', e.target.value);
+                      }}
+                    />
+                    {client.needs_attention && (
+                      <AlertTriangle className="w-4 h-4 text-yellow-400" />
+                    )}
+                    {client.is_overdue && (
+                      <Clock className="w-4 h-4 text-red-400" />
+                    )}
                   </div>
-                </div>
-                
-                <div className="mt-3 flex items-center space-x-6 text-sm">
-                  {client.status && (
-                    <span className={cn(
-                      "px-2 py-1 rounded-full text-xs font-medium",
-                      client.status === 'active' ? "bg-green-500/20 text-green-400" :
-                      client.status === 'pending' ? "bg-yellow-500/20 text-yellow-400" :
-                      "bg-gray-500/20 text-gray-400"
-                    )}>
-                      {client.status}
-                    </span>
-                  )}
-                  
-                  {client.created_at && (
-                    <span className="text-text-secondary">
-                      Created: {formatDate(client.created_at)}
-                    </span>
-                  )}
-                  
-                  {client.last_visit_date && (
-                    <span className="text-text-secondary">
-                      Last visit: {formatDate(client.last_visit_date)}
-                    </span>
-                  )}
-                  
-                  {client.due_date && (
-                    <span className={cn(
-                      "text-sm",
-                      client.is_overdue ? "text-red-400" : "text-text-secondary"
-                    )}>
-                      Due: {formatDate(client.due_date)}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                {type === 'retargeting' && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleSendNudge(client.id, 'retargeting')}
-                    className="px-4 py-2 bg-neon-primary/20 text-neon-primary rounded-lg hover:bg-neon-primary/30 transition-colors flex items-center space-x-2"
+                </td>
+                <td className="py-4 px-4">
+                  <input
+                    type="email"
+                    defaultValue={client.email}
+                    className="bg-transparent border-none text-text-primary focus:outline-none focus:bg-white/5 rounded px-2 py-1 w-full"
+                    onBlur={(e) => {
+                      // Handle email update
+                      console.log('Update email:', e.target.value);
+                    }}
+                  />
+                </td>
+                <td className="py-4 px-4">
+                  <input
+                    type="tel"
+                    defaultValue={client.phone || ''}
+                    placeholder="Add phone"
+                    className="bg-transparent border-none text-text-primary focus:outline-none focus:bg-white/5 rounded px-2 py-1 w-full placeholder-text-secondary"
+                    onBlur={(e) => {
+                      // Handle phone update
+                      console.log('Update phone:', e.target.value);
+                    }}
+                  />
+                </td>
+                <td className="py-4 px-4">
+                  <select
+                    defaultValue={client.status || 'pending'}
+                    className="bg-white/5 border border-white/10 rounded px-2 py-1 text-text-primary text-sm focus:outline-none focus:ring-1 focus:ring-neon-primary/50"
+                    onChange={(e) => {
+                      // Handle status update
+                      console.log('Update status:', e.target.value);
+                    }}
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Send Nudge</span>
-                  </motion.button>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </td>
+                <td className="py-4 px-4 text-text-secondary text-sm">
+                  {client.created_at ? formatDate(client.created_at) : 'N/A'}
+                </td>
+                {type !== 'welcome' && (
+                  <td className="py-4 px-4 text-text-secondary text-sm">
+                    {type === 'retargeting' 
+                      ? (client.last_visit_date ? formatDate(client.last_visit_date) : 'N/A')
+                      : (client.due_date ? formatDate(client.due_date) : 'N/A')
+                    }
+                  </td>
                 )}
-                
-                {type === 'followups' && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleSendNudge(client.id, 'followup')}
-                    className="px-4 py-2 bg-neon-primary/20 text-neon-primary rounded-lg hover:bg-neon-primary/30 transition-colors flex items-center space-x-2"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>Log Follow-up Email</span>
-                  </motion.button>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                <td className="py-4 px-4">
+                  <div className="flex items-center space-x-2">
+                    {type === 'retargeting' && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleSendNudge(client.id, 'retargeting')}
+                        className="px-3 py-1 bg-neon-primary/20 text-neon-primary rounded text-sm hover:bg-neon-primary/30 transition-colors flex items-center space-x-1"
+                      >
+                        <Send className="w-3 h-3" />
+                        <span>Nudge</span>
+                      </motion.button>
+                    )}
+                    
+                    {type === 'followups' && (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleSendNudge(client.id, 'followup')}
+                        className="px-3 py-1 bg-neon-primary/20 text-neon-primary rounded text-sm hover:bg-neon-primary/30 transition-colors flex items-center space-x-1"
+                      >
+                        <Send className="w-3 h-3" />
+                        <span>Follow-up</span>
+                      </motion.button>
+                    )}
+                  </div>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   };
@@ -258,9 +282,9 @@ export default function ClientsPage() {
           </div>
         ) : (
           <>
-            {activeTab === 'welcome' && renderClientList(welcomeClients, 'welcome')}
-            {activeTab === 'retargeting' && renderClientList(retargetingClients, 'retargeting')}
-            {activeTab === 'followups' && renderClientList(followupClients, 'followups')}
+            {activeTab === 'welcome' && renderClientTable(welcomeClients, 'welcome')}
+            {activeTab === 'retargeting' && renderClientTable(retargetingClients, 'retargeting')}
+            {activeTab === 'followups' && renderClientTable(followupClients, 'followups')}
           </>
         )}
       </div>
