@@ -39,7 +39,7 @@ class BaserowClient {
   }
 
   private async fetchTables(): Promise<BaserowTable[]> {
-    const response = await fetch(`${this.baseUrl}/api/database/tables/`, {
+    const response = await fetch(`${this.baseUrl}/api/database/tables/all-tables/`, {
       headers: this.getAuthHeaders(),
       dispatcher: this.agent
     });
