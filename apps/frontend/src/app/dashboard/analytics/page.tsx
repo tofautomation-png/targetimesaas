@@ -126,7 +126,13 @@ export default function AnalyticsPage() {
     );
   }
 
-  const StatCard = ({ icon: Icon, title, value, subtitle, color = "neon-primary" }) => (
+  const StatCard = ({ icon: Icon, title, value, subtitle, color = "neon-primary" }: {
+    icon: React.ComponentType<any>;
+    title: string;
+    value: string;
+    subtitle: string;
+    color?: string;
+  }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
