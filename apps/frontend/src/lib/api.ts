@@ -55,13 +55,19 @@ class ApiClient {
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     
+    const headers: Record<string, string> = {
+      ...(options.headers as Record<string, string>),
+    };
+    
+    // Only add Content-Type if there's a body
+    if (options.body) {
+      headers['Content-Type'] = 'application/json';
+    }
+    
     const response = await fetch(url, {
       ...options,
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
     });
 
     if (!response.ok) {
@@ -81,7 +87,9 @@ class ApiClient {
   }
 
   async logout(): Promise<void> {
-    await this.request('/auth/logout', { method: 'POST' });
+    await this.request('/auth/logout', { 
+      method: 'POST'
+    });
   }
 
   async getSession(): Promise<SessionResponse> {
