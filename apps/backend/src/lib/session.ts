@@ -8,7 +8,7 @@ export interface SessionUser {
 }
 
 export function requireAuth(request: FastifyRequest): SessionUser {
-  const user = request.session.get('user') as SessionUser | undefined;
+  const user = (request.session as any).user as SessionUser | undefined;
   
   if (!user) {
     throw new Error('Authentication required');
@@ -18,9 +18,9 @@ export function requireAuth(request: FastifyRequest): SessionUser {
 }
 
 export function setSessionUser(request: FastifyRequest, user: SessionUser): void {
-  request.session.set('user', user);
+  (request.session as any).user = user;
 }
 
 export function clearSession(request: FastifyRequest): void {
-  request.session.delete();
+  request.session.destroy();
 }

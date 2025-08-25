@@ -49,7 +49,7 @@ class BaserowClient {
     
     // Look for pattern: prefix_AGENCY_CODE (e.g., clients_welcome_TT001)
     const match = normalized.match(/^(.+)_([A-Z]{2}\d{3})$/i);
-    if (match) {
+    if (match && match[1] && match[2]) {
       return { prefix: match[1], agencyCode: match[2].toUpperCase() };
     }
 
