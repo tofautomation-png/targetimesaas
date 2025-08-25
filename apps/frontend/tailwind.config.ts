@@ -21,7 +21,8 @@ const config: Config = {
         text: {
           primary: '#F2F7F5',
           secondary: '#A9B8B3',
-        }
+        },
+        border: '#1F2937',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
