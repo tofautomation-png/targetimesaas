@@ -1,0 +1,79 @@
+# Targetime Partners API Examples
+# Use with REST Client extension in VS Code or similar tools
+
+### Variables
+@baseUrl = http://localhost:8080
+@prodUrl = https://crmbackend.becoming-more.pro
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### Get Session
+GET {{baseUrl}}/auth/session
+
+### Get KPIs
+GET {{baseUrl}}/overview/kpis
+
+### Get Welcome Clients
+GET {{baseUrl}}/clients/welcome
+
+### Get Retargeting Clients
+GET {{baseUrl}}/clients/retargeting
+
+### Get Follow-up Clients
+GET {{baseUrl}}/clients/followups
+
+### Create Welcome Client
+POST {{baseUrl}}/clients/welcome
+Content-Type: application/json
+
+{
+  "client_name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1234567890",
+  "status": "active"
+}
+
+### Send Retargeting Email
+POST {{baseUrl}}/clients/retargeting/1/email-logs
+Content-Type: application/json
+
+{
+  "subject": "We miss you! Come back and see what's new",
+  "content": "Hi there! We noticed you haven't visited us in a while..."
+}
+
+### Get Appointments
+GET {{baseUrl}}/appointments
+
+### Get Appointments with Filters
+GET {{baseUrl}}/appointments?status=scheduled&start_date=2024-01-01
+
+### Create Appointment
+POST {{baseUrl}}/appointments
+Content-Type: application/json
+
+{
+  "client_name": "Jane Smith",
+  "starts_at": "2024-01-15T10:00:00Z",
+  "status": "scheduled",
+  "value": 150.00
+}
+
+### Export Appointments as CSV
+GET {{baseUrl}}/reports/export?entity=appointments&format=csv
+
+### Export Clients as JSON
+GET {{baseUrl}}/reports/export?entity=welcome&format=json
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Logout
+POST {{baseUrl}}/auth/logout
